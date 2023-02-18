@@ -4,6 +4,7 @@ import br.com.jairfreitas.Restapi.domain.User;
 import br.com.jairfreitas.Restapi.domain.dto.UserDto;
 import br.com.jairfreitas.Restapi.repositories.UserRepository;
 import br.com.jairfreitas.Restapi.services.UserService;
+import br.com.jairfreitas.Restapi.services.exceptons.DataIntegrityViolationException;
 import br.com.jairfreitas.Restapi.services.exceptons.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDto userDto) {
-        return repository.save(mapper.map(userDto, User.class));
+        Optional<User> user = repository.findByEmail(userDto.getEmail());
+        if (user.isEmpty()){
+            return repository.save(mapper.map(userDto, User.class));
+        }else {
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema");
+        }
     }
-
 
 }
