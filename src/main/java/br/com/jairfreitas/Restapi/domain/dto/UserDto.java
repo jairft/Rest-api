@@ -1,6 +1,7 @@
 package br.com.jairfreitas.Restapi.domain.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,6 @@ public class UserDto {
     private Integer id;
     private String name;
     private String email;
+    @JsonIgnore
     private String password;
 }
