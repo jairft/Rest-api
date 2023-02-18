@@ -5,11 +5,9 @@ import br.com.jairfreitas.Restapi.domain.dto.UserDto;
 import br.com.jairfreitas.Restapi.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +29,10 @@ public class UserResource {
     public ResponseEntity<List<UserDto>> findAll(){
         return ResponseEntity.ok().body(service.findAll().
                 stream().map(e -> mapper.map(e, UserDto.class)).toList());
-
+    }
+    @PostMapping
+    public ResponseEntity<UserDto> insertUser(@RequestBody UserDto userDto){
+        User user = service.create(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(user, UserDto.class));
     }
 }
