@@ -34,8 +34,8 @@ class UserResourceTest {
     public static final String PASSWORD = "123";
     public static final String RECURSO_NAO_ENCONTRADO = "Recurso não encontrado";
 
-    private User user;
-    private UserDto userDto;
+    private User user = new User();
+    private UserDto userDto = new UserDto();
     @InjectMocks
     private UserResource resource;
     @Mock
