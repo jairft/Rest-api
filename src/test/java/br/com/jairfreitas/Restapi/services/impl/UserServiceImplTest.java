@@ -3,6 +3,7 @@ package br.com.jairfreitas.Restapi.services.impl;
 import br.com.jairfreitas.Restapi.domain.User;
 import br.com.jairfreitas.Restapi.domain.dto.UserDto;
 import br.com.jairfreitas.Restapi.repositories.UserRepository;
+import br.com.jairfreitas.Restapi.services.exceptons.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,18 @@ class UserServiceImplTest {
         assertEquals(ID, response.getId());
         assertEquals(NAME, response.getName());
         assertEquals(EMAIL, response.getEmail());
+    }
+
+    @Test
+    void quandoBuscarPeloIdMeRetornarUmaExcecao(){
+        when(repository.findById(anyInt())).thenThrow(new ResourceNotFoundException("Recurso não encontrado"));
+
+        try {
+            service.findById(ID);
+        }catch (Exception ex){
+            assertEquals(ResourceNotFoundException.class, ex.getClass());
+            assertEquals("Recurso não encontrado", ex.getMessage());
+        }
     }
 
     @Test
