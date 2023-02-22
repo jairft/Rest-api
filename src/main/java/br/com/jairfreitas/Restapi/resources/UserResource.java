@@ -34,4 +34,10 @@ public class UserResource {
         User user = service.create(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.map(user, UserDto.class));
     }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserDto> update(@PathVariable Integer id, @RequestBody UserDto userDto) {
+        userDto.setId(id);
+        return ResponseEntity.ok().body(mapper.map(service.update(userDto), UserDto.class));
+
+    }
 }
