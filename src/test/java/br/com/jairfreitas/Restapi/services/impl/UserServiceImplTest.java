@@ -152,6 +152,16 @@ class UserServiceImplTest {
         service.delete(ID);
         verify(repository, times(1)).deleteById(anyInt());
     }
+    @Test
+    void deletadoComResourceNotFoundException() {
+        when(repository.findById(anyInt())).thenThrow(new ResourceNotFoundException("Recurso não encontrado"));
+        try {
+            service.delete(ID);
+        }catch (Exception ex){
+            assertEquals(ResourceNotFoundException.class, ex.getClass());
+            assertEquals("Recurso não encontrado", ex.getMessage());
+        }
+    }
 
     private void startUser(){
         user = new User(ID, NAME, EMAIL, PASSWORD);
