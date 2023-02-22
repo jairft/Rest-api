@@ -89,7 +89,14 @@ class UserResourceTest {
     }
 
     @Test
-    void insertUser() {
+    void quandoCriadoUmUsuarioRetorneCreated() {
+        when(service.create(any())).thenReturn(user);
+
+        ResponseEntity<UserDto> response = resource.insertUser(userDto);
+
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
     }
 
     @Test
