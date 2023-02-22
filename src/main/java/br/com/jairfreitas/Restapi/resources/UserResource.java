@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -27,7 +28,7 @@ public class UserResource {
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll(){
         return ResponseEntity.ok().body(service.findAll().
-                stream().map(e -> mapper.map(e, UserDto.class)).toList());
+                stream().map(e -> mapper.map(e, UserDto.class)).collect(Collectors.toList()));
     }
     @PostMapping
     public ResponseEntity<UserDto> insertUser(@RequestBody UserDto userDto){

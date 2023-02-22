@@ -75,7 +75,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void quandoBuscarTodosMeretorneUmaListaDeUsuarios() {
+    void quandoBuscarTodosMeRetorneUmaListaDeUser() {
         when(repository.findAll()).thenReturn(List.of(user));
 
         List<User> response = service.findAll();

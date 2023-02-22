@@ -2,6 +2,7 @@ package br.com.jairfreitas.Restapi.resources;
 
 import br.com.jairfreitas.Restapi.domain.User;
 import br.com.jairfreitas.Restapi.domain.dto.UserDto;
+import br.com.jairfreitas.Restapi.repositories.UserRepository;
 import br.com.jairfreitas.Restapi.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,9 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,6 +41,9 @@ class UserResourceTest {
     private UserServiceImpl service;
     @Mock
     private ModelMapper mapper;
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -60,7 +69,23 @@ class UserResourceTest {
     }
 
     @Test
-    void findAll() {
+    void quandoBuscarTodosMeRetorneUmaListaDeUserDto() {
+        when(service.findAll()).thenReturn(List.of(user));
+        when(mapper.map(any(), any())).thenReturn(userDto);
+
+        ResponseEntity<List<UserDto>> response = resource.findAll();
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(ArrayList.class, response.getBody().getClass());
+        assertEquals(UserDto.class, response.getBody().get(0).getClass());
+
+        assertEquals(ID, response.getBody().get(0).getId());
+        assertEquals(NAME, response.getBody().get(0).getName());
+        assertEquals(EMAIL, response.getBody().get(0).getEmail());
+        assertEquals(PASSWORD, response.getBody().get(0).getPassword());
     }
 
     @Test
